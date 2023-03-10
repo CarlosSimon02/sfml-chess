@@ -19,6 +19,7 @@ public:
 		Pawn
 	};
 
+
 	enum class Side
 	{
 		White,
@@ -28,6 +29,10 @@ public:
 	Piece(const Type& type, const Side& side, const std::vector<sf::Vector2i>& moveDirections);
 	void setPos(const sf::Vector2i& boardPos);
 	void draw(sf::RenderWindow& window);
+	sf::Vector2i getPos() const;
+	virtual std::vector<sf::Vector2i> createPositionChoices(std::array<std::unique_ptr<Piece>,64>& piecesBuffer);
+	std::vector<sf::Vector2i> getMoveDirections() const;
+	Side getSide() const;
 
 private:
 	sf::Texture mTexture;
@@ -36,4 +41,5 @@ private:
 	Type mType;
 	Side mSide;
 	std::vector<sf::Vector2i> mMoveDirections;
+
 };

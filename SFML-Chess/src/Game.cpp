@@ -52,6 +52,7 @@ void Game::run()
 		mWindow.clear();
 		
 		mBoard.draw(mWindow);
+		mHighlights.draw(mWindow);
 		for (size_t i = 0; i < mPiecesBuffer.size(); i++)
 		{
 			if (mPiecesBuffer[i] != NULL) 
@@ -66,6 +67,16 @@ void Game::run()
 		while (mWindow.waitEvent(e))
 		{
 			if (e.type == sf::Event::Closed) mWindow.close();
+
+			if (e.type == sf::Event::MouseButtonPressed)
+			{
+				if (mPiecesBuffer[Board::getBufferPosition(sf::Mouse::getPosition(mWindow))] == NULL) 
+				{
+					mHighlights.clear(); break;
+				}
+				mHighlights.setSquares(mPiecesBuffer[Board::getBufferPosition(sf::Mouse::getPosition(mWindow))]->createPositionChoices(mPiecesBuffer));
+				break;
+			}
 		}
 	}
 }

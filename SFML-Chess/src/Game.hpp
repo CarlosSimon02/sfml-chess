@@ -9,6 +9,7 @@
 #include "Knight.hpp"
 #include "Rook.hpp"
 #include "Pawn.hpp"
+#include "Highlights.hpp"
 
 class Game
 {
@@ -21,4 +22,5 @@ private:
 
 	std::array<std::unique_ptr<Piece>, 64> mPiecesBuffer;
 	Board mBoard;
+	Highlights mHighlights;
 };

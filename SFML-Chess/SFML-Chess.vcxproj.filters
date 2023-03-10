@@ -51,6 +51,9 @@
     <ClCompile Include="src\Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Highlights.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp">
@@ -78,6 +81,9 @@
       <Filter>Header Files\Pieces</Filter>
     </ClInclude>
     <ClInclude Include="src\Board.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Highlights.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

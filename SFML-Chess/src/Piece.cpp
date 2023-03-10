@@ -12,10 +12,30 @@ Piece::Piece(const Type& type, const Side& side, const std::vector<sf::Vector2i>
 void Piece::setPos(const sf::Vector2i& boardPos)
 {
 	mPos = boardPos;
-	mSprite.setPosition({ (float)boardPos.x * 100.f, (float)boardPos.y * 100.f });
+	mSprite.setPosition({ (float)boardPos.x * Board::TILESIZE, (float)boardPos.y * Board::TILESIZE });
 }
 
 void Piece::draw(sf::RenderWindow& window)
 {
 	window.draw(mSprite);
+}
+
+sf::Vector2i Piece::getPos() const
+{
+	return mPos;
+}
+
+std::vector<sf::Vector2i> Piece::createPositionChoices(std::array<std::unique_ptr<Piece>, 64>& piecesBuffer)
+{
+	return std::vector<sf::Vector2i>();
+}
+
+std::vector<sf::Vector2i> Piece::getMoveDirections() const
+{
+	return mMoveDirections;
+}
+
+Piece::Side Piece::getSide() const
+{
+	return mSide;
 }
