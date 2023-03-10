@@ -20,4 +20,5 @@ private:
 	sf::RenderWindow mWindow;
 
 	std::array<std::unique_ptr<Piece>, 64> mPiecesBuffer;
+	Board mBoard;
 };

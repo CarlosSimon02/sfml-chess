@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "Board.hpp"
+
 class Piece
 {
 public:
@@ -23,12 +25,15 @@ public:
 		Black
 	};
 
-	Piece(Type type, Side side);
-	void setSpritePos(sf::Vector2i boardPos);
+	Piece(const Type& type, const Side& side, const std::vector<sf::Vector2i>& moveDirections);
+	void setPos(const sf::Vector2i& boardPos);
 	void draw(sf::RenderWindow& window);
 
 private:
 	sf::Texture mTexture;
 	sf::Sprite mSprite;
+	sf::Vector2i mPos = {};
+	Type mType;
 	Side mSide;
+	std::vector<sf::Vector2i> mMoveDirections;
 };

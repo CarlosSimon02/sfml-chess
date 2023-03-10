@@ -27,7 +27,7 @@
     <ClCompile Include="src\Rook.cpp">
       <Filter>Source Files\Pieces</Filter>
     </ClCompile>
-    <ClCompile Include="Bishop.cpp">
+    <ClCompile Include="src\Bishop.cpp">
       <Filter>Source Files\Pieces</Filter>
     </ClCompile>
     <ClCompile Include="src\King.cpp">
@@ -46,6 +46,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="src\Pawn.hpp">
       <Filter>Header Files\Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Board.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

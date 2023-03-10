@@ -1,16 +1,18 @@
 #include "Piece.hpp"
 
-Piece::Piece(Type type, Side side)
-	: mSide(side)
+Piece::Piece(const Type& type, const Side& side, const std::vector<sf::Vector2i>& moveDirections)
+	: mType{ type }, mSide{ side }, mMoveDirections{ moveDirections }
 {
-	mTexture.loadFromFile("assets/chess-pieces.png");
+	std::string fileName = "chess-pieces.png";
+	if (!mTexture.loadFromFile("assets/chess-pieces.png")) std::cout << "Can't open " + fileName << std::endl;
 	mSprite.setTexture(mTexture);
-	mSprite.setTextureRect({ static_cast<int>(type) * 100,static_cast<int>(side) * 100, 100,100 });
+	mSprite.setTextureRect({ (int)type * Board::TILESIZE, (int)side * Board::TILESIZE, Board::TILESIZE, Board::TILESIZE });
 }
 
-void Piece::setSpritePos(sf::Vector2i boardPos)
+void Piece::setPos(const sf::Vector2i& boardPos)
 {
-	mSprite.setPosition(sf::Vector2f(boardPos.x * 100, boardPos.y * 100));
+	mPos = boardPos;
+	mSprite.setPosition({ (float)boardPos.x * 100.f, (float)boardPos.y * 100.f });
 }
 
 void Piece::draw(sf::RenderWindow& window)

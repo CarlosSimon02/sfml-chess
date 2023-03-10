@@ -155,7 +155,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bishop.cpp" />
+    <ClCompile Include="src\Bishop.cpp" />
+    <ClCompile Include="src\Board.cpp" />
     <ClCompile Include="src\King.cpp" />
     <ClCompile Include="src\Knight.cpp" />
     <ClCompile Include="src\Pawn.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="src\Piece.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Board.hpp" />
     <ClInclude Include="src\Bishop.hpp" />
     <ClInclude Include="src\King.hpp" />
     <ClInclude Include="src\Knight.hpp" />
