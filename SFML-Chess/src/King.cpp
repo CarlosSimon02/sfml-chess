@@ -7,7 +7,7 @@ King::King(Side side)
 		  {-2,0}, {+2,0} })						//castling
 {}
 
-std::vector<sf::Vector2i> King::createPositionChoices(std::array<std::unique_ptr<Piece>, 64>& piecesBuffer)
+std::vector<sf::Vector2i> King::createPositionChoices(PiecesBuffer& piecesBuffer)
 {
 	std::vector<sf::Vector2i> positionChoicesList;
 	positionChoicesList.push_back(getPos());

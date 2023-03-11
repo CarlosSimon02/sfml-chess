@@ -15,9 +15,9 @@ void Piece::setPos(const sf::Vector2i& boardPos)
 	mSprite.setPosition({ (float)boardPos.x * Board::TILESIZE, (float)boardPos.y * Board::TILESIZE });
 }
 
-void Piece::draw(sf::RenderWindow& window)
+sf::Sprite Piece::getSprite() const
 {
-	window.draw(mSprite);
+	return mSprite;
 }
 
 sf::Vector2i Piece::getPos() const
@@ -25,7 +25,7 @@ sf::Vector2i Piece::getPos() const
 	return mPos;
 }
 
-std::vector<sf::Vector2i> Piece::createPositionChoices(std::array<std::unique_ptr<Piece>, 64>& piecesBuffer)
+std::vector<sf::Vector2i> Piece::createPositionChoices(PiecesBuffer& piecesBuffer)
 {
 	return std::vector<sf::Vector2i>();
 }

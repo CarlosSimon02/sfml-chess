@@ -3,13 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <array>
 
-#include "King.hpp"
-#include "Queen.hpp"
-#include "Bishop.hpp"
-#include "Knight.hpp"
-#include "Rook.hpp"
-#include "Pawn.hpp"
 #include "Highlights.hpp"
+#include "PiecesBuffer.hpp"
 
 class Game
 {
@@ -20,7 +15,7 @@ public:
 private:
 	sf::RenderWindow mWindow;
 
-	std::array<std::unique_ptr<Piece>, 64> mPiecesBuffer;
 	Board mBoard;
 	Highlights mHighlights;
+	PiecesBuffer mPiecesBuffer;
 };

@@ -2,11 +2,11 @@
 
 #include "Piece.hpp"
 
-class Highlights
+class Highlights : public sf::Drawable
 {
 public:
 	void setSquares(const std::vector<sf::Vector2i>& positions);
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const override;
 	void clear();
 
 private:

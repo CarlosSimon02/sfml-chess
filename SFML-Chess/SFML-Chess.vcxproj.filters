@@ -13,34 +13,40 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Pieces">
+    <Filter Include="Source Files\Chess Pieces">
+      <UniqueIdentifier>{39f55327-5d05-4df0-9d47-6e703f36a957}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Chess Pieces">
       <UniqueIdentifier>{5f4cc488-69ad-4004-b79c-e9c9f82fc167}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Pieces">
-      <UniqueIdentifier>{39f55327-5d05-4df0-9d47-6e703f36a957}</UniqueIdentifier>
+    <Filter Include="Header Files\Drawables">
+      <UniqueIdentifier>{ac5d634d-27ab-4a5b-a398-fe212926ff20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawables">
+      <UniqueIdentifier>{bdf9c5f8-24cc-4631-afac-13a6f3f01899}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Piece.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Chess Pieces</Filter>
     </ClCompile>
     <ClCompile Include="src\Rook.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Chess Pieces</Filter>
     </ClCompile>
     <ClCompile Include="src\Bishop.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Chess Pieces</Filter>
     </ClCompile>
     <ClCompile Include="src\King.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Chess Pieces</Filter>
     </ClCompile>
     <ClCompile Include="src\Knight.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Chess Pieces</Filter>
     </ClCompile>
     <ClCompile Include="src\Pawn.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Chess Pieces</Filter>
     </ClCompile>
     <ClCompile Include="src\Queen.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Chess Pieces</Filter>
     </ClCompile>
     <ClCompile Include="src\Game.cpp">
       <Filter>Source Files</Filter>
@@ -49,10 +55,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Board.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PiecesBuffer.cpp">
+      <Filter>Source Files\Drawables</Filter>
     </ClCompile>
     <ClCompile Include="src\Highlights.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Drawables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -60,31 +69,34 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Piece.hpp">
-      <Filter>Header Files\Pieces</Filter>
+      <Filter>Header Files\Chess Pieces</Filter>
     </ClInclude>
     <ClInclude Include="src\Rook.hpp">
-      <Filter>Header Files\Pieces</Filter>
+      <Filter>Header Files\Chess Pieces</Filter>
     </ClInclude>
     <ClInclude Include="src\Knight.hpp">
-      <Filter>Header Files\Pieces</Filter>
+      <Filter>Header Files\Chess Pieces</Filter>
     </ClInclude>
     <ClInclude Include="src\Bishop.hpp">
-      <Filter>Header Files\Pieces</Filter>
+      <Filter>Header Files\Chess Pieces</Filter>
     </ClInclude>
     <ClInclude Include="src\Queen.hpp">
-      <Filter>Header Files\Pieces</Filter>
+      <Filter>Header Files\Chess Pieces</Filter>
     </ClInclude>
     <ClInclude Include="src\King.hpp">
-      <Filter>Header Files\Pieces</Filter>
+      <Filter>Header Files\Chess Pieces</Filter>
     </ClInclude>
     <ClInclude Include="src\Pawn.hpp">
-      <Filter>Header Files\Pieces</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Board.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Chess Pieces</Filter>
     </ClInclude>
     <ClInclude Include="src\Highlights.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PiecesBuffer.hpp">
+      <Filter>Header Files\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Board.hpp">
+      <Filter>Header Files\Drawables</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

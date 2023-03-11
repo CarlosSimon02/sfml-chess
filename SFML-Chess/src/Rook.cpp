@@ -5,7 +5,7 @@ Rook::Rook(Side side)
 		{ {-1,0}, {+1,0},{0,+1},{0,-1} }) //straight
 {}
 
-std::vector<sf::Vector2i> Rook::createPositionChoices(std::array<std::unique_ptr<Piece>, 64>& piecesBuffer)
+std::vector<sf::Vector2i> Rook::createPositionChoices(PiecesBuffer& piecesBuffer)
 {
 	std::vector<sf::Vector2i> positionChoicesList;
 	positionChoicesList.push_back(getPos());

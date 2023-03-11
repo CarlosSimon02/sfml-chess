@@ -6,7 +6,7 @@ Knight::Knight(Side side)
 		  {-1,-2}, {+1,-2},{+1,+2},{-1,+2} })
 {}
 
-std::vector<sf::Vector2i> Knight::createPositionChoices(std::array<std::unique_ptr<Piece>, 64>&piecesBuffer)
+std::vector<sf::Vector2i> Knight::createPositionChoices(PiecesBuffer& piecesBuffer)
 {
 	std::vector<sf::Vector2i> positionChoicesList;
 	positionChoicesList.push_back(getPos());

@@ -12,10 +12,10 @@ void Highlights::setSquares(const std::vector<sf::Vector2i>& positions)
 	}
 }
 
-void Highlights::draw(sf::RenderWindow& window)
+void Highlights::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	for (size_t i = 0; i < mSquares.size(); i++)
-		window.draw(mSquares[i]);
+		target.draw(mSquares[i]);
 }
 
 void Highlights::clear()

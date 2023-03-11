@@ -5,7 +5,7 @@ Bishop::Bishop(Side side)
 		{ {-1,-1}, {+1,-1},{+1,+1},{-1,+1} })//slant
 {}
 
-std::vector<sf::Vector2i> Bishop::createPositionChoices(std::array<std::unique_ptr<Piece>, 64>& piecesBuffer)
+std::vector<sf::Vector2i> Bishop::createPositionChoices(PiecesBuffer& piecesBuffer)
 {
 	std::vector<sf::Vector2i> positionChoicesList;
 	positionChoicesList.push_back(getPos());

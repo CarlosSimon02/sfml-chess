@@ -2,66 +2,22 @@
 
 Game::Game()
 	: mWindow(sf::VideoMode(800, 800), "SFML-Chess")
-{
-	std::array<int, 64> boardSetUp = 
-	  { 41, 31, 21, 11, 01, 21, 31, 41,
-		51, 51, 51, 51, 51, 51, 51, 51,
-		-10, -10, -10, -10, -10, -10, -10, -10,
-		-10, -10, -10, -10, -10, -10, -10, -10,
-		-10, -10, -10, -10, -10, -10, -10, -10,
-		-10, -10, -10, -10, -10, -10, -10, -10,
-		50, 50, 50, 50, 50, 50, 50, 50,
-		40, 30, 20, 10, 00, 20, 30, 40 };
-
-
-	for (size_t i = 0; i < mPiecesBuffer.size(); i++)
-	{
-		switch (static_cast<Piece::Type>(boardSetUp[i] / 10))
-		{
-		case Piece::Type::Blank:
-			mPiecesBuffer[i] = NULL;
-			break;
-		case Piece::Type::King:
-			mPiecesBuffer[i].reset(new King(static_cast<Piece::Side>(boardSetUp[i] % 10)));
-			break;
-		case Piece::Type::Queen:
-			mPiecesBuffer[i].reset(new Queen(static_cast<Piece::Side>(boardSetUp[i] % 10)));
-			break;
-		case Piece::Type::Bishop:
-			mPiecesBuffer[i].reset(new Bishop(static_cast<Piece::Side>(boardSetUp[i] % 10)));
-			break;
-		case Piece::Type::Knight:
-			mPiecesBuffer[i].reset(new Knight(static_cast<Piece::Side>(boardSetUp[i] % 10)));
-			break;
-		case Piece::Type::Rook:
-			mPiecesBuffer[i].reset(new Rook(static_cast<Piece::Side>(boardSetUp[i] % 10)));
-			break;
-		case Piece::Type::Pawn:
-			mPiecesBuffer[i].reset(new Pawn(static_cast<Piece::Side>(boardSetUp[i] % 10)));
-			break;
-		}
-	}
-}
+{}
 
 void Game::run()
 {
 	sf::Event e;
+	std::vector<sf::Drawable*> drawables = { 
+		&mBoard, 
+		&mHighlights, 
+		&mPiecesBuffer };
+
+	int clickedMousePos = -1;
 
 	while (mWindow.isOpen())
 	{
 		mWindow.clear();
-		
-		mBoard.draw(mWindow);
-		mHighlights.draw(mWindow);
-		for (size_t i = 0; i < mPiecesBuffer.size(); i++)
-		{
-			if (mPiecesBuffer[i] != NULL) 
-			{
-				mPiecesBuffer[i]->setPos({ (int)i % 8, (int)i / 8});
-				mPiecesBuffer[i]->draw(mWindow);
-			}
-		}
-
+		for (auto& drawable : drawables) mWindow.draw(*drawable);
 		mWindow.display();
 
 		while (mWindow.waitEvent(e))
@@ -70,11 +26,14 @@ void Game::run()
 
 			if (e.type == sf::Event::MouseButtonPressed)
 			{
-				if (mPiecesBuffer[Board::getBufferPosition(sf::Mouse::getPosition(mWindow))] == NULL) 
+				if (clickedMousePos >= 0) 
 				{
-					mHighlights.clear(); break;
+					mPiecesBuffer.movePiece(clickedMousePos, Board::getBufferPosition(sf::Mouse::getPosition(mWindow)));
+					clickedMousePos = -1;
+					break;
 				}
-				mHighlights.setSquares(mPiecesBuffer[Board::getBufferPosition(sf::Mouse::getPosition(mWindow))]->createPositionChoices(mPiecesBuffer));
+				clickedMousePos = Board::getBufferPosition(sf::Mouse::getPosition(mWindow));
+				mHighlights.setSquares(mPiecesBuffer[clickedMousePos]->createPositionChoices(mPiecesBuffer));
 				break;
 			}
 		}

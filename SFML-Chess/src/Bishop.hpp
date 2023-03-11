@@ -6,5 +6,5 @@ class Bishop : public Piece
 {
 public: 
 	Bishop(Side side);
-	std::vector<sf::Vector2i> createPositionChoices(std::array<std::unique_ptr<Piece>, 64>& piecesBuffer) override;
+	std::vector<sf::Vector2i> createPositionChoices(PiecesBuffer& piecesBuffer) override;
 };
