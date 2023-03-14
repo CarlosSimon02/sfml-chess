@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Drawables">
       <UniqueIdentifier>{bdf9c5f8-24cc-4631-afac-13a6f3f01899}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\State">
+      <UniqueIdentifier>{4239eded-2538-46bf-bb4c-f0549623285a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State">
+      <UniqueIdentifier>{026f49e5-bb8f-4891-86f0-963aff440861}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Piece.cpp">
@@ -63,6 +69,9 @@
     <ClCompile Include="src\Highlights.cpp">
       <Filter>Source Files\Drawables</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameState.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp">
@@ -97,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="src\Board.hpp">
       <Filter>Header Files\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameState.hpp">
+      <Filter>Header Files\State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,10 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <array>
-
-#include "Highlights.hpp"
-#include "PiecesBuffer.hpp"
+#include "GameState.hpp"
 
 class Game
 {
@@ -15,7 +11,5 @@ public:
 private:
 	sf::RenderWindow mWindow;
 
-	Board mBoard;
-	Highlights mHighlights;
-	PiecesBuffer mPiecesBuffer;
+	GameState mGameState;
 };

@@ -14,15 +14,15 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool Board::posIsOutOfBounds(sf::Vector2i pos)
 {
-	if (pos.x < 0 || pos.x >= Board::TILESIZE ||
-		pos.y < 0 || pos.y >= Board::TILESIZE) return true;
+	if (pos.x < 0 || pos.x >= Board::TILECOUNT.x ||
+		pos.y < 0 || pos.y >= Board::TILECOUNT.y) return true;
 
 	return false;
 }
 
 sf::Uint16 Board::getBufferPosition(const sf::Vector2i position)
 {
-	return ((position.y / Board::TILESIZE) * Board::TILECOUNT.x) + position.x / Board::TILESIZE;
+	return ((position.y) * Board::TILECOUNT.x) + position.x;
 }
 
 sf::Vector2i Board::getVectorPosition(const sf::Uint16 bufferPosition)

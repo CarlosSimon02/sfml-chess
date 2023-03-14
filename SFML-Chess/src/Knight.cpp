@@ -1,22 +1,20 @@
 #include <Knight.hpp>
 
-Knight::Knight(Side side)
-	: Piece(Type::Knight, side,
+Knight::Knight(Side side, const sf::Vector2i& position)
+	: Piece(Type::Knight, side, position,
 		{ {-2,-1}, {+2,-1},{+2,+1},{-2,+1},    // L
 		  {-1,-2}, {+1,-2},{+1,+2},{-1,+2} })
 {}
 
 std::vector<sf::Vector2i> Knight::createPositionChoices(PiecesBuffer& piecesBuffer)
 {
+	auto posAt = [&](int index) {return sf::Vector2i{ getPos().x + getMoveDirections()[index].x, getPos().y + getMoveDirections()[index].y }; };
 	std::vector<sf::Vector2i> positionChoicesList;
 	positionChoicesList.push_back(getPos());
 	for (size_t i = 0; i < getMoveDirections().size(); i++)
 	{
-		if (getPos().x + getMoveDirections()[i].x < 0 ||
-			getPos().x + getMoveDirections()[i].x >= Board::TILESIZE ||
-			getPos().y + getMoveDirections()[i].y < 0 ||
-			getPos().y + getMoveDirections()[i].y >= Board::TILESIZE) continue;
-		positionChoicesList.push_back({ getPos().x + getMoveDirections()[i].x,getPos().y + getMoveDirections()[i].y });
+		if (!Board::posIsOutOfBounds(posAt((int)i)) &&
+			!piecesBuffer.hasPiece(posAt((int)i), getSide())) positionChoicesList.push_back(posAt((int)i));
 	}
 	return positionChoicesList;
 }

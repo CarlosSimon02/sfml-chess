@@ -93,6 +93,7 @@
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\SFML-2.5.1\include;$(ProjectDir)src</AdditionalIncludeDirectories>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,6 +128,7 @@
       <PreprocessorDefinitions>SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\SFML-2.5.1\include;$(ProjectDir)src</AdditionalIncludeDirectories>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\GameState.cpp" />
     <ClCompile Include="src\PiecesBuffer.cpp" />
     <ClCompile Include="src\Highlights.cpp" />
     <ClCompile Include="src\Bishop.cpp" />
@@ -169,6 +172,7 @@
     <ClCompile Include="src\Piece.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GameState.hpp" />
     <ClInclude Include="src\PiecesBuffer.hpp" />
     <ClInclude Include="src\Highlights.hpp" />
     <ClInclude Include="src\Board.hpp" />

@@ -1,23 +1,24 @@
 #include <Bishop.hpp>
 
-Bishop::Bishop(Side side)
-	: Piece(Type::Bishop, side,
+Bishop::Bishop(Side side, const sf::Vector2i& position)
+	: Piece(Type::Bishop, side,position,
 		{ {-1,-1}, {+1,-1},{+1,+1},{-1,+1} })//slant
 {}
 
 std::vector<sf::Vector2i> Bishop::createPositionChoices(PiecesBuffer& piecesBuffer)
 {
+	auto posAt = [&](int index, int offset) {return sf::Vector2i{ getPos().x + getMoveDirections()[index].x * offset, getPos().y + getMoveDirections()[index].y * offset }; };
 	std::vector<sf::Vector2i> positionChoicesList;
 	positionChoicesList.push_back(getPos());
 	for (size_t i = 0; i < getMoveDirections().size(); i++)
 	{
 		int offset = 1;
-		while (getPos().x + getMoveDirections()[i].x * offset >= 0 &&
-			getPos().x + getMoveDirections()[i].x * offset < Board::TILESIZE &&
-			getPos().y + getMoveDirections()[i].y * offset >= 0 &&
-			getPos().y + getMoveDirections()[i].y  * offset < Board::TILESIZE)
+		while (!Board::posIsOutOfBounds(posAt((int)i, offset)) &&
+			!piecesBuffer.hasPiece(posAt((int)i, offset), getSide()))
 		{
-			positionChoicesList.push_back({ getPos().x + getMoveDirections()[i].x * offset,getPos().y + getMoveDirections()[i].y * offset});
+			positionChoicesList.push_back(posAt((int)i, offset));
+			if (piecesBuffer.hasPiece(posAt((int)i, offset), (getSide() == Side::Black) ? Side::White : Side::Black) &&
+				!piecesBuffer.hasPiece(posAt((int)i, offset), (getSide() == Side::Black) ? Side::White : Side::Black, Type::King)) break;
 			offset++;
 		}
 	}

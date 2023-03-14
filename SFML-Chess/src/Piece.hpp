@@ -6,44 +6,29 @@
 #include <memory>
 
 #include "Board.hpp"
-
-class PiecesBuffer;
+#include "PiecesBuffer.hpp"
 
 class Piece
 {
 public:
-	enum class Type
-	{
-		Blank = -1,
-		King,
-		Queen,
-		Bishop,
-		Knight,
-		Rook,
-		Pawn
-	};
-
-
-	enum class Side
-	{
-		White,
-		Black
-	};
-
-	Piece(const Type& type, const Side& side, const std::vector<sf::Vector2i>& moveDirections);
+	Piece(const Type& type, const Side& side, const sf::Vector2i& position, const std::vector<sf::Vector2i>& moveDirections);
 	void setPos(const sf::Vector2i& boardPos);
 	sf::Sprite getSprite() const;
 	sf::Vector2i getPos() const;
-	virtual std::vector<sf::Vector2i> createPositionChoices(PiecesBuffer& piecesBuffer);
+	virtual std::vector<sf::Vector2i> createPositionChoices(PiecesBuffer& piecesBuffer) = 0;
 	std::vector<sf::Vector2i> getMoveDirections() const;
 	Side getSide() const;
+	Type getType() const;
+	void setState(State state);
+	State getState() const;
 
 private:
 	sf::Texture mTexture;
 	sf::Sprite mSprite;
-	sf::Vector2i mPos = {};
+	sf::Vector2i mPos;
 	Type mType;
 	Side mSide;
+	State mState = State::Static;
 	std::vector<sf::Vector2i> mMoveDirections;
 
 };
