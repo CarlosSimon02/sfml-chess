@@ -2,7 +2,6 @@
 
 #include <Piece.hpp>
 
-
 class Pawn : public Piece
 {
 public:
@@ -10,6 +9,5 @@ public:
 	std::vector<sf::Vector2i> createPositionChoices(PiecesBuffer& piecesBuffer) override;
 
 private:
-	std::pair<bool, bool> mCanEnpassant = { false,false };
-	bool mHasMoved = false;
+	std::pair<bool, bool> mCanEnpassant = { false, false };
 };

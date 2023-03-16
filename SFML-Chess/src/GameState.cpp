@@ -19,7 +19,7 @@ void GameState::handleEvents(sf::RenderWindow& window, sf::Event& event)
 			if (mOldMousePos >= 0)
 			{
 				int newMousePos = Board::getBufferPosition({ sf::Mouse::getPosition(window).x / Board::TILESIZE, sf::Mouse::getPosition(window).y / Board::TILESIZE });
-				if (mHighlights.isInPositionChoices(Board::getVectorPosition(newMousePos)))
+				if (mHighlights.isInPositionChoices(Board::getVectorPosition(newMousePos)) && newMousePos != mOldMousePos)
 				{
 					mPiecesBuffer.movePiece(mOldMousePos, newMousePos);
 					mPiecesBuffer.setTurnSide((mPiecesBuffer.getTurnSide() == Side::Black) ? Side::White : Side::Black);
@@ -28,7 +28,7 @@ void GameState::handleEvents(sf::RenderWindow& window, sf::Event& event)
 				mOldMousePos = -1;
 				return;
 			}
-			else if (mPiecesBuffer.hasPiece({ sf::Mouse::getPosition(window).x / Board::TILESIZE, sf::Mouse::getPosition(window).y / Board::TILESIZE }, mPiecesBuffer.getTurnSide()))
+			if (mPiecesBuffer.hasPiece({ sf::Mouse::getPosition(window).x / Board::TILESIZE, sf::Mouse::getPosition(window).y / Board::TILESIZE }, mPiecesBuffer.getTurnSide()))
 			{
 				mOldMousePos = Board::getBufferPosition({ sf::Mouse::getPosition(window).x / Board::TILESIZE, sf::Mouse::getPosition(window).y / Board::TILESIZE });
 				mHighlights.setPositions(mPiecesBuffer[mOldMousePos]->createPositionChoices(mPiecesBuffer));
