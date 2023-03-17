@@ -45,8 +45,10 @@ public:
 	void setTurnSide(Side side);
 	bool kingIsInCheck(const sf::Vector2i testOldPos, const sf::Vector2i& testNewPos, Side side);
 	std::vector<sf::Vector2i> getPiecesPosByType(Type type, Side side = Side::Any);
+	std::pair<sf::Vector2i, sf::Vector2i> getEnpassantPos() const;
 
 private:
 	std::array<std::unique_ptr<Piece>, 64> mBuffer;
 	Side mTurnSide = Side::White;
+	std::pair<sf::Vector2i, sf::Vector2i> mCanEnpassantPos = { {-1,-1},{-1,-1} };
 };

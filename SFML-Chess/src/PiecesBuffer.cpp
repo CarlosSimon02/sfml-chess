@@ -82,9 +82,30 @@ void PiecesBuffer::movePiece(uint16_t old, uint16_t current)
 		}
 	}
 
+	//for enpassant
+	mCanEnpassantPos = { {-1,-1},{-1,-1} };
+	if (mBuffer[old]->getType() == Type::Pawn)
+	{
+		if (Board::getVectorPosition(current) == sf::Vector2i{ mBuffer[old]->getPos().x + mBuffer[old]->getMoveDirs()[0].dir.x * 2, mBuffer[old]->getPos().y + mBuffer[old]->getMoveDirs()[0].dir.y * 2 })
+		{
+			sf::Vector2i left = { Board::getVectorPosition(current).x - 1,Board::getVectorPosition(current).y };
+			sf::Vector2i right = { Board::getVectorPosition(current).x + 1,Board::getVectorPosition(current).y };
+			if (!Board::posIsOutOfBounds(left)) mCanEnpassantPos.first = left;
+			if (!Board::posIsOutOfBounds(right)) mCanEnpassantPos.second = right;
+		}
+		if ((Board::getVectorPosition(current) == sf::Vector2i{ mBuffer[old]->getPos().x + mBuffer[old]->getMoveDirs()[2].dir.x, mBuffer[old]->getPos().y + mBuffer[old]->getMoveDirs()[2].dir.y }) ||
+			Board::getVectorPosition(current) == sf::Vector2i{ mBuffer[old]->getPos().x + mBuffer[old]->getMoveDirs()[1].dir.x, mBuffer[old]->getPos().y + mBuffer[old]->getMoveDirs()[1].dir.y })
+		{
+			std::cout << "run" << std::endl;
+			mBuffer[Board::getBufferPosition({ Board::getVectorPosition(current).x, Board::getVectorPosition(current).y - mBuffer[old]->getMoveDirs()[0].dir.y })].reset();
+		}
+
+	}
+
 	mBuffer[current] = std::move(mBuffer[old]);
 	mBuffer[current]->setPos(Board::getVectorPosition(current));
 	mBuffer[current]->setState(State::Moved);
+
 
 
 }
@@ -115,6 +136,11 @@ Side PiecesBuffer::getTurnSide() const
 void PiecesBuffer::setTurnSide(Side side)
 {
 	mTurnSide = side;
+}
+
+std::pair<sf::Vector2i, sf::Vector2i> PiecesBuffer::getEnpassantPos() const
+{
+	return mCanEnpassantPos;
 }
 
 bool PiecesBuffer::kingIsInCheck(const sf::Vector2i testOldPos, const sf::Vector2i& testNewPos, Side side)

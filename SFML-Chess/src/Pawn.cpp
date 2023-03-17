@@ -34,14 +34,14 @@ std::vector<sf::Vector2i> Pawn::createPositionChoices(PiecesBuffer& piecesBuffer
 			!Board::posIsOutOfBounds({ getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j }) &&
 			(i == 0 && !piecesBuffer.hasPiece({ getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j }) ||
 			((i == 1 || i == 2) && piecesBuffer.hasPiece({ getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j }, (getSide() == Side::Black) ? Side::White : Side::Black)) ||
-			i == 1 && mCanEnpassant.first || i == 2 && mCanEnpassant.second);
+			i == 2 && getPos() == piecesBuffer.getEnpassantPos().first || 
+			i == 1 && getPos() == piecesBuffer.getEnpassantPos().second);
 			j++)
 		{
 			sf::Vector2i currentPos = { getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j };
 			sf::Vector2i kingPos = piecesBuffer.getPiecesPosByType(Type::King, getSide())[0];
 
 			if (!piecesBuffer.kingIsInCheck(getPos(), currentPos, getSide())) positionChoicesList.push_back(currentPos);
-
 			if (piecesBuffer.hasPiece(currentPos, (getSide() == Side::Black) ? Side::White : Side::Black)) break;
 		}
 	}
