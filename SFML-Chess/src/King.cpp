@@ -1,6 +1,8 @@
 #include <King.hpp>
 
-King::King(Side side, const sf::Vector2i& position)
+#include <numeric>
+
+King::King(Side side, sf::Vector2i position)
 	: Piece(Type::King, side, position,
 		{
 			{ {-1,-1}, 1 }, //slant
@@ -14,11 +16,29 @@ King::King(Side side, const sf::Vector2i& position)
 		})
 {}
 
-std::vector<sf::Vector2i> King::createPositionChoices(PiecesBuffer& piecesBuffer)
+std::vector<sf::Vector2i> King::validPosList(PiecesBuffer& buff)
 {
+	setCastlePos(buff);
 	std::vector<sf::Vector2i> positionChoicesList;
 	positionChoicesList.push_back(getPos());
+	for (const MoveDir& movedir : getMoveDirs())
+		for (size_t j = 1; j <= movedir.range; j++)
+			if (isValidPos({ getPos() + (movedir.dir * (int)j) }, buff))
+				positionChoicesList.push_back({ getPos() + (movedir.dir * (int)j) });
+	return positionChoicesList;
+}
 
+bool King::canBeReach(sf::Vector2i pos, PiecesBuffer& buff)
+{
+	sf::Vector2i dir = ((pos - getPos()) / std::gcd(pos.x - getPos().x, pos.y - getPos().y));
+	for (sf::Vector2i i{ getPos() + dir }; i != pos; i += dir)
+		if (buff.hasPiece(i) && buff.testCheck(getPos(),i,getSide()) && isInMoveDirs(dir))
+			return false;
+	return true;
+}
+
+void King::setCastlePos(PiecesBuffer& buff)
+{
 	sf::Vector2i qRookOriginPos = { (getSide() == Side::Black) ? sf::Vector2i{0,0} : sf::Vector2i{0,7} };
 	sf::Vector2i kRookOriginPos = { (getSide() == Side::Black) ? sf::Vector2i{7,0} : sf::Vector2i{7,7} };
 
@@ -28,38 +48,18 @@ std::vector<sf::Vector2i> King::createPositionChoices(PiecesBuffer& piecesBuffer
 	auto setCastle = [&](int index, sf::Vector2i rookPos)
 	{
 		for (size_t i = 0; i < getMoveDirs()[index].range; i++)
-			if (getState() == State::Moved ||
-				!piecesBuffer.hasPiece(rookPos, getSide(), Type::Rook, State::Static) ||
-				piecesBuffer.kingIsInCheck(getPos(), getPos(), getSide()) ||
-				piecesBuffer.hasPiece({ getPos().x + getMoveDirs()[index].dir.x,getPos().y + getMoveDirs()[index].dir.y }))
+			if (getState() == State::Static &&
+				buff.hasPiece(rookPos, getSide(), Type::Rook, State::Static) &&
+				isValidPos(getPos() + getMoveDirs()[index].dir, buff) &&
+				!buff.kingIsInCheck(getSide()))
 			{
-				getMoveDirs()[index].range = 1;
+				getMoveDirs()[index].range = 2;
 				return;
 			}
-
-		getMoveDirs()[index].range = 2;
+		getMoveDirs()[index].range = 1;
 		return;
 	};
-
 	setCastle(4, qRookOriginPos);
 	setCastle(5, kRookOriginPos);
-
-
-	for (size_t i = 0; i < getMoveDirs().size(); i++)
-	{
-		for (size_t j = 1;
-			j <= getMoveDirs()[i].range &&
-			!Board::posIsOutOfBounds({ getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j }) &&
-			!piecesBuffer.hasPiece({ getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j }, getSide()) &&
-			!piecesBuffer.kingIsInCheck(getPos(), { getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j }, getSide());
-			j++)
-		{
-			sf::Vector2i currentPos = { getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j };
-			positionChoicesList.push_back(currentPos);
-
-			if (piecesBuffer.hasPiece(currentPos, (getSide() == Side::Black) ? Side::White : Side::Black)) break;
-		}
-	}
-	return positionChoicesList;
 }
 

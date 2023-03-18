@@ -1,6 +1,8 @@
 #include "Pawn.hpp"
 
-Pawn::Pawn(Side side, const sf::Vector2i& position)
+#include <numeric>
+
+Pawn::Pawn(Side side, sf::Vector2i position)
 	: Piece(Type::Pawn, side, position, (Side::Black == side) ?
 		std::vector<MoveDir>{
 			{ { 0, 1}, 2 },
@@ -17,33 +19,40 @@ Pawn::Pawn(Side side, const sf::Vector2i& position)
 		getSide() == Side::White && getPos().y != 1) setState(State::Moved);
 }
 
-std::vector<sf::Vector2i> Pawn::createPositionChoices(PiecesBuffer& piecesBuffer)
+std::vector<sf::Vector2i> Pawn::validPosList(PiecesBuffer& piecesBuffer)
 {
 	std::vector<sf::Vector2i> positionChoicesList;
+
 	if (getSide() != piecesBuffer.getTurnSide())
-		return std::vector<sf::Vector2i>{ getPos(),{getPos().x + getMoveDirs()[1].dir.x, getPos().y + getMoveDirs()[1].dir.y}, { getPos().x + getMoveDirs()[2].dir.x, getPos().y + getMoveDirs()[2].dir.y }};
+		return std::vector<sf::Vector2i>{ getPos(),
+			{ getPos() + getMoveDirs()[1].dir }, 
+			{ getPos() + getMoveDirs()[2].dir }};
 
 	positionChoicesList.push_back(getPos());
 
 	if (getState() == State::Moved) getMoveDirs()[0].range = 1;
 
-	for (size_t i = 0; i < getMoveDirs().size(); i++)
-	{
-		for (size_t j = 1;
-			(j <= getMoveDirs()[i].range) &&
-			!Board::posIsOutOfBounds({ getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j }) &&
-			(i == 0 && !piecesBuffer.hasPiece({ getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j }) ||
-			((i == 1 || i == 2) && piecesBuffer.hasPiece({ getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j }, (getSide() == Side::Black) ? Side::White : Side::Black)) ||
-			i == 2 && getPos() == piecesBuffer.getEnpassantPos().first || 
-			i == 1 && getPos() == piecesBuffer.getEnpassantPos().second);
-			j++)
-		{
-			sf::Vector2i currentPos = { getPos().x + getMoveDirs()[i].dir.x * (int)j, getPos().y + getMoveDirs()[i].dir.y * (int)j };
-			sf::Vector2i kingPos = piecesBuffer.getPiecesPosByType(Type::King, getSide())[0];
-
-			if (!piecesBuffer.kingIsInCheck(getPos(), currentPos, getSide())) positionChoicesList.push_back(currentPos);
-			if (piecesBuffer.hasPiece(currentPos, (getSide() == Side::Black) ? Side::White : Side::Black)) break;
-		}
-	}
+	for (const MoveDir& movedir : getMoveDirs())
+		for (size_t j = 1; j <= movedir.range; j++)
+			if (isValidPos({ getPos() + (movedir.dir * (int)j) }, piecesBuffer))
+				positionChoicesList.push_back({ getPos() + (movedir.dir * (int)j) });
 	return positionChoicesList;
+}
+
+bool Pawn::isValidPos(sf::Vector2i pos, PiecesBuffer& buff)
+{
+	sf::Vector2i dir = ((pos - getPos()) / std::gcd(pos.x - getPos().x, pos.y - getPos().y));
+
+	bool canBeCaptured = ((dir == getMoveDirs()[0].dir && !buff.hasPiece(pos)) ||
+		((dir == getMoveDirs()[1].dir || dir == getMoveDirs()[2].dir) && buff.hasPiece(pos, (getSide() == Side::Black) ? Side::White : Side::Black)) ||
+		(dir == getMoveDirs()[2].dir && getPos() == buff.getEnpassantPos().first) ||
+		(dir == getMoveDirs()[1].dir && getPos() == buff.getEnpassantPos().second));
+
+	if (!Board::posIsOOB(pos) &&
+		canBeReach(pos, buff) &&
+		canBeCaptured &&
+		!buff.testCheck(getPos(), pos, getSide()))
+		return true;
+
+	return false;
 }

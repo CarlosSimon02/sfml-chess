@@ -43,10 +43,15 @@ public:
 	const std::array<std::unique_ptr<Piece>, 64>& get() const;
 	Side getTurnSide() const;
 	void setTurnSide(Side side);
-	bool kingIsInCheck(const sf::Vector2i testOldPos, const sf::Vector2i& testNewPos, Side side);
+	bool kingIsInCheck(Side side);
 	std::vector<sf::Vector2i> getPiecesPosByType(Type type, Side side = Side::Any);
 	std::pair<sf::Vector2i, sf::Vector2i> getEnpassantPos() const;
+	bool testCheck(sf::Vector2i old, sf::Vector2i current, Side side);
 
+private:
+	void checkForCastle(uint16_t old, uint16_t current);
+	void checkForEnpassant(uint16_t old, uint16_t current);
+		
 private:
 	std::array<std::unique_ptr<Piece>, 64> mBuffer;
 	Side mTurnSide = Side::White;

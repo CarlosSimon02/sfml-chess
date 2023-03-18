@@ -1,6 +1,6 @@
 #include <Queen.hpp>
 
-Queen::Queen(Side side, const sf::Vector2i& position)
+Queen::Queen(Side side, sf::Vector2i position)
 	: Piece(Type::Queen,side, position,
 		{ 
 			{ {-1,-1}, (uint16_t)Board::TILECOUNT.x }, //slant

@@ -5,5 +5,5 @@
 class Bishop : public Piece
 {
 public: 
-	Bishop(Side side, const sf::Vector2i& position);
+	Bishop(Side side, sf::Vector2i position);
 };

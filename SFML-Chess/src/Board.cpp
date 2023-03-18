@@ -12,7 +12,7 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
-bool Board::posIsOutOfBounds(sf::Vector2i pos)
+bool Board::posIsOOB(sf::Vector2i pos)
 {
 	if (pos.x < 0 || pos.x >= Board::TILECOUNT.x ||
 		pos.y < 0 || pos.y >= Board::TILECOUNT.y) return true;
@@ -20,12 +20,12 @@ bool Board::posIsOutOfBounds(sf::Vector2i pos)
 	return false;
 }
 
-sf::Uint16 Board::getBufferPosition(const sf::Vector2i position)
+sf::Uint16 Board::getBufPos(const sf::Vector2i position)
 {
 	return ((position.y) * Board::TILECOUNT.x) + position.x;
 }
 
-sf::Vector2i Board::getVectorPosition(const sf::Uint16 bufferPosition)
+sf::Vector2i Board::getVecPos(const sf::Uint16 bufferPosition)
 {
 	return sf::Vector2i{ bufferPosition % TILECOUNT.x, bufferPosition / TILECOUNT.y };
 }

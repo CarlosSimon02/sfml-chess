@@ -3,5 +3,5 @@
 class Knight : public Piece
 {
 public:
-	Knight(Side side, const sf::Vector2i& position);
+	Knight(Side side, sf::Vector2i position);
 };

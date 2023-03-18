@@ -5,5 +5,5 @@
 class Rook : public Piece
 {
 public:
-	Rook(Side side, const sf::Vector2i& position);
+	Rook(Side side, sf::Vector2i position);
 };

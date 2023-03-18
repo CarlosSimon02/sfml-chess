@@ -1,6 +1,6 @@
 #include <Rook.hpp>
 
-Rook::Rook(Side side, const sf::Vector2i& position)
+Rook::Rook(Side side, sf::Vector2i position)
 	: Piece(Type::Rook, side, position,
 		{
 			{ {-1, 0}, (uint16_t)Board::TILECOUNT.x }, //straight   

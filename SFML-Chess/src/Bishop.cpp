@@ -1,6 +1,6 @@
 #include <Bishop.hpp>
 
-Bishop::Bishop(Side side, const sf::Vector2i& position)
+Bishop::Bishop(Side side, sf::Vector2i position)
 	: Piece(Type::Bishop, side, position,
 		{
 			{ {-1,-1}, (uint16_t)Board::TILECOUNT.x }, //slant
