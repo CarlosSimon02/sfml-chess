@@ -23,7 +23,7 @@ std::vector<sf::Vector2i> Pawn::validPosList(PiecesBuffer& piecesBuffer)
 {
 	std::vector<sf::Vector2i> positionChoicesList;
 
-	if (getSide() != piecesBuffer.getTurnSide())
+	if (getSide() != piecesBuffer.getPlygSide())
 		return std::vector<sf::Vector2i>{ getPos(),
 			{ getPos() + getMoveDirs()[1].dir }, 
 			{ getPos() + getMoveDirs()[2].dir }};
@@ -45,8 +45,12 @@ bool Pawn::isValidPos(sf::Vector2i pos, PiecesBuffer& buff)
 
 	bool canBeCaptured = ((dir == getMoveDirs()[0].dir && !buff.hasPiece(pos)) ||
 		((dir == getMoveDirs()[1].dir || dir == getMoveDirs()[2].dir) && buff.hasPiece(pos, (getSide() == Side::Black) ? Side::White : Side::Black)) ||
-		(dir == getMoveDirs()[2].dir && getPos() == buff.getEnpassantPos().first) ||
-		(dir == getMoveDirs()[1].dir && getPos() == buff.getEnpassantPos().second));
+		(dir == getMoveDirs()[2].dir && 
+			getPos() + sf::Vector2i{ 1,0 } == buff[Board::getBufPos(buff.getLastMovedPiecePos())]->getPos() &&
+			buff[Board::getBufPos(buff.getLastMovedPiecePos())]->getLastMoveDirUsed().range == 2) ||
+		(dir == getMoveDirs()[1].dir && 
+			getPos() + sf::Vector2i{-1,0 } == buff[Board::getBufPos(buff.getLastMovedPiecePos())]->getPos() &&
+			buff[Board::getBufPos(buff.getLastMovedPiecePos())]->getLastMoveDirUsed().range == 2));
 
 	if (!Board::posIsOOB(pos) &&
 		canBeReach(pos, buff) &&
@@ -55,4 +59,23 @@ bool Pawn::isValidPos(sf::Vector2i pos, PiecesBuffer& buff)
 		return true;
 
 	return false;
+}
+
+void Pawn::setPos(const sf::Vector2i& pos, PiecesBuffer& buff)
+{
+	//for enpassant
+	if (buff.hasPiece(buff.getLastMovedPiecePos(), (getSide() == Side::Black) ? Side::White : Side::Black, Type::Pawn) &&
+		buff[Board::getBufPos(buff.getLastMovedPiecePos())]->getLastMoveDirUsed().range == 2 &&
+		(pos == sf::Vector2i{ getPos() + getMoveDirs()[2].dir } && getPos() + sf::Vector2i{ 1,0 } == buff[Board::getBufPos(buff.getLastMovedPiecePos())]->getPos()) ||
+		(pos == sf::Vector2i{ getPos() + getMoveDirs()[1].dir } && getPos() + sf::Vector2i{-1,0 } == buff[Board::getBufPos(buff.getLastMovedPiecePos())]->getPos()))
+	{
+		buff[Board::getBufPos(buff[Board::getBufPos(buff.getLastMovedPiecePos())]->getPos())].reset();
+	}
+
+	//for promoting
+	if (pos.y == ((getSide() == Side::White) ? 0 : 7))
+		buff.setPromotingStat(true);
+
+	setLastMoveDirUsed(pos);
+	setSpritePos(pos);
 }

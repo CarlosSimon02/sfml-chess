@@ -10,12 +10,13 @@ Piece::Piece(const Type& type, const Side& side, sf::Vector2i pos, const std::ve
 	mTexture.setSmooth(true);
 	mSprite.setTexture(mTexture);
 	mSprite.setTextureRect({ (int)type * Board::TILESIZE, (int)side * Board::TILESIZE, Board::TILESIZE, Board::TILESIZE });
-	mSprite.setPosition(static_cast<sf::Vector2f>(pos * (int)Board::TILESIZE));
+	mSprite.setPosition(static_cast<sf::Vector2f>(pos * Board::TILESIZE));
 }
 
-void Piece::setPos(const sf::Vector2i& pos)
+void Piece::setPos(const sf::Vector2i& pos, PiecesBuffer& buff)
 {
-	mSprite.setPosition(static_cast<sf::Vector2f>(pos*(int)Board::TILESIZE));
+	setLastMoveDirUsed(pos);
+	mSprite.setPosition(static_cast<sf::Vector2f>(pos*Board::TILESIZE));
 }
 
 sf::Sprite Piece::getSprite() const
@@ -23,9 +24,28 @@ sf::Sprite Piece::getSprite() const
 	return mSprite;
 }
 
+void Piece::setSpritePos(const sf::Vector2i& pos)
+{
+	mSprite.setPosition(static_cast<sf::Vector2f>(pos * Board::TILESIZE));
+}
+
+void Piece::setLastMoveDirUsed(const sf::Vector2i& pos)
+{
+	MoveDir temp = { (pos - getPos()) / std::gcd(pos.x - getPos().x, pos.y - getPos().y), 
+		(pos.x - getPos().x == 0) ? std::abs(pos.y - getPos().y) : std::abs(pos.x - getPos().x) };
+
+	if (isInMoveDirs(temp.dir))
+		mLastMoveDirUsed = temp;
+}
+
+Piece::MoveDir Piece::getLastMoveDirUsed() const
+{
+	return mLastMoveDirUsed;
+}
+
 sf::Vector2i Piece::getPos() const
 {
-	return static_cast<sf::Vector2i>(mSprite.getPosition()) / (int)Board::TILESIZE;
+	return static_cast<sf::Vector2i>(mSprite.getPosition()) / Board::TILESIZE;
 }
 
 std::vector<sf::Vector2i> Piece::validPosList(PiecesBuffer& piecesBuffer)

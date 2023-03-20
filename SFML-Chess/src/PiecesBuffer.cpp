@@ -63,12 +63,11 @@ void PiecesBuffer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void PiecesBuffer::movePiece(uint16_t old, uint16_t current)
 {
-	checkForEnpassant(old,current);
-	checkForCastle(old, current);
-
 	mBuffer[current] = std::move(mBuffer[old]);
-	mBuffer[current]->setPos(Board::getVecPos(current));
+	mBuffer[current]->setPos(Board::getVecPos(current), *this);
 	mBuffer[current]->setState(State::Moved);
+
+	mLastMovedPiecePos = Board::getVecPos(current);
 }
 
 bool PiecesBuffer::hasPiece(sf::Vector2i position, Side side, Type type, State state)
@@ -89,71 +88,30 @@ std::unique_ptr<Piece>& PiecesBuffer::operator[](int index)
 	return mBuffer[index];
 }
 
-Side PiecesBuffer::getTurnSide() const
+Side PiecesBuffer::getPlygSide() const
 {
-	return mTurnSide;
+	return mPlayingSide;
 }
 
-void PiecesBuffer::setTurnSide(Side side)
+void PiecesBuffer::setPlygSide(Side side)
 {
-	mTurnSide = side;
+	mPlayingSide = side;
 }
 
-std::pair<sf::Vector2i, sf::Vector2i> PiecesBuffer::getEnpassantPos() const
+sf::Vector2i PiecesBuffer::getLastMovedPiecePos() const
 {
-	return mCanEnpassantPos;
-}
-
-void PiecesBuffer::checkForEnpassant(uint16_t old, uint16_t current)
-{
-	//mCanEnpassantPos = { {-1,-1},{-1,-1} };
-	if (mBuffer[old]->getType() == Type::Pawn)
-	{
-		if (Board::getVecPos(current) == sf::Vector2i{ mBuffer[old]->getPos() + (mBuffer[old]->getMoveDirs()[0].dir * 2) })
-		{
-			sf::Vector2i left = { Board::getVecPos(current) + sf::Vector2i{-1,0}};
-			sf::Vector2i right = { Board::getVecPos(current) + sf::Vector2i{1,0} };
-			if (!Board::posIsOOB(left)) mCanEnpassantPos.first = left;
-			if (!Board::posIsOOB(right)) mCanEnpassantPos.second = right;
-		}
-		if (Board::getVecPos(current) == sf::Vector2i{ mBuffer[old]->getPos() + mBuffer[old]->getMoveDirs()[2].dir } && mCanEnpassantPos.first == mBuffer[old]->getPos() ||
-			Board::getVecPos(current) == sf::Vector2i{ mBuffer[old]->getPos() + mBuffer[old]->getMoveDirs()[1].dir } && mCanEnpassantPos.second == mBuffer[old]->getPos())
-		{
-			mBuffer[Board::getBufPos({ Board::getVecPos(current) - mBuffer[old]->getMoveDirs()[0].dir })].reset();
-		}
-	}
-}
-
-void PiecesBuffer::checkForCastle(uint16_t old, uint16_t current)
-{
-	if (mBuffer[old]->getType() == Type::King)
-	{
-		if (Board::getVecPos(current) == sf::Vector2i{ mBuffer[old]->getPos() + (mBuffer[old]->getMoveDirs()[4].dir * 2) })
-		{
-			sf::Vector2i qRookPos = (mBuffer[old]->getSide() == Side::Black) ? sf::Vector2i{ 0,0 } : sf::Vector2i{ 0,7 };
-			mBuffer[Board::getBufPos({ qRookPos + sf::Vector2i{3,0} })] = std::move(mBuffer[Board::getBufPos(qRookPos)]);
-			mBuffer[Board::getBufPos({ qRookPos + sf::Vector2i{3,0} })]->setPos({ qRookPos + sf::Vector2i{3,0} });
-			mBuffer[Board::getBufPos({ qRookPos + sf::Vector2i{3,0} })]->setState(State::Moved);
-		}
-		else if (Board::getVecPos(current) == sf::Vector2i{ mBuffer[old]->getPos() + (mBuffer[old]->getMoveDirs()[5].dir * 2) })
-		{
-			sf::Vector2i kRookPos = (mBuffer[old]->getSide() == Side::Black) ? sf::Vector2i{ 7,0 } : sf::Vector2i{ 7,7 };
-			mBuffer[Board::getBufPos({ kRookPos - sf::Vector2i{2,0} })] = std::move(mBuffer[Board::getBufPos(kRookPos)]);
-			mBuffer[Board::getBufPos({ kRookPos - sf::Vector2i{2,0} })]->setPos({ kRookPos - sf::Vector2i{2,0} });
-			mBuffer[Board::getBufPos({ kRookPos - sf::Vector2i{2,0} })]->setState(State::Moved);
-		}
-	}
+	return mLastMovedPiecePos;
 }
 
 bool PiecesBuffer::testCheck(sf::Vector2i old, sf::Vector2i current, Side side)
 {
-	if (old == current) return kingIsInCheck(side);
+	if (old == current) return isInChk(side);
 
 	std::unique_ptr<Piece> pieceHolder = nullptr;
 	pieceHolder = std::move(mBuffer[Board::getBufPos(current)]);
 	mBuffer[Board::getBufPos(current)] = std::move(mBuffer[Board::getBufPos(old)]);
 
-	bool result = kingIsInCheck(side);
+	bool result = isInChk(side);
 
 	mBuffer[Board::getBufPos(old)] = std::move(mBuffer[Board::getBufPos(current)]);
 	mBuffer[Board::getBufPos(current)] = std::move(pieceHolder);
@@ -161,19 +119,88 @@ bool PiecesBuffer::testCheck(sf::Vector2i old, sf::Vector2i current, Side side)
 	return result;
 }
 
-bool PiecesBuffer::kingIsInCheck(Side side)
+bool PiecesBuffer::isInChk(Side side)
 {
-	for (std::unique_ptr<Piece>& piece: mBuffer)
+	for (std::unique_ptr<Piece>& piece : mBuffer)
 	{
 		if (piece != nullptr &&
 			piece->getSide() != side &&
-			piece->getSide() != mTurnSide)
+			piece->getSide() != mPlayingSide)
 			for (sf::Vector2i validPos : piece->validPosList(*this))
 				if (getPiecesPosByType(Type::King, side).size() > 0 &&
 					getPiecesPosByType(Type::King, side)[0] == validPos)
 					return true;
 	}
 	return false;
+}
+
+void PiecesBuffer::setCheckMateStat()
+{
+	if (isInChk(mPlayingSide) && mIsStaleMate)
+	{
+		mIsCheckMate = true;
+		return;
+	}
+	mIsCheckMate = false;
+}
+
+bool PiecesBuffer::getCheckMateStat() const
+{
+	if (mIsCheckMate) std::cout << "Checkmate, " << ((mPlayingSide == Side::Black) ? "white " : "black ") << "won!" << std::endl;
+	return mIsCheckMate;
+}
+
+void PiecesBuffer::setStaleMateStat()
+{
+	for (std::unique_ptr<Piece>& piece : mBuffer)
+	{
+		if (piece != nullptr &&
+			piece->getSide() == mPlayingSide &&
+			piece->validPosList(*this).size() > 1)
+		{
+			mIsStaleMate = false;
+			return;
+		}
+
+	}
+	mIsStaleMate = true;
+}
+
+bool PiecesBuffer::getStaleMateStat() const
+{
+	if (mIsStaleMate) std::cout << "stalemate" << std::endl;
+	return mIsStaleMate;
+}
+
+void PiecesBuffer::setPromotingStat(bool stat)
+{
+	mIsPromoting = stat;
+}
+
+bool PiecesBuffer::getPromotingStat() const
+{
+	return mIsPromoting;
+}
+
+void PiecesBuffer::promote(sf::Vector2i pos, Type type)
+{
+	Side tempSide = mBuffer[Board::getBufPos(pos)]->getSide();
+
+	switch (type)
+	{
+	case Type::Queen:
+		mBuffer[Board::getBufPos(pos)].reset(new Queen(tempSide, pos));
+		break;
+	case Type::Bishop:
+		mBuffer[Board::getBufPos(pos)].reset(new Bishop(tempSide, pos));
+		break;
+	case Type::Knight:
+		mBuffer[Board::getBufPos(pos)].reset(new Knight(tempSide, pos));
+		break;
+	case Type::Rook:
+		mBuffer[Board::getBufPos(pos)].reset(new Rook(tempSide, pos));
+		break;
+	}
 }
 
 std::vector<sf::Vector2i> PiecesBuffer::getPiecesPosByType(Type type, Side side)
@@ -190,7 +217,3 @@ std::vector<sf::Vector2i> PiecesBuffer::getPiecesPosByType(Type type, Side side)
 	return pieces;
 }
 
-const std::array<std::unique_ptr<Piece>, 64>& PiecesBuffer::get() const
-{
-	return mBuffer;
-}

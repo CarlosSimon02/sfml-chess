@@ -17,6 +17,5 @@ void Game::run()
 		mWindow.display();
 
 		mGameState.handleEvents(mWindow, e);
-		
 	}
 }

@@ -1,4 +1,4 @@
-#include <Board.hpp>
+#include "Board.hpp"
 
 void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
@@ -30,6 +30,6 @@ sf::Vector2i Board::getVecPos(const sf::Uint16 bufferPosition)
 	return sf::Vector2i{ bufferPosition % TILECOUNT.x, bufferPosition / TILECOUNT.y };
 }
 
-const sf::Uint16   Board::TILESIZE = 100;
+const int          Board::TILESIZE = 100;
 const sf::Vector2i Board::TILECOUNT = { 8,8 };
 const sf::Vector2i Board::DIM = { 800,800 };

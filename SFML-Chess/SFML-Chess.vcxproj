@@ -167,6 +167,7 @@
     <ClCompile Include="src\King.cpp" />
     <ClCompile Include="src\Knight.cpp" />
     <ClCompile Include="src\Pawn.cpp" />
+    <ClCompile Include="src\PromoteOption.cpp" />
     <ClCompile Include="src\Queen.cpp" />
     <ClCompile Include="src\Rook.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="src\King.hpp" />
     <ClInclude Include="src\Knight.hpp" />
     <ClInclude Include="src\Pawn.hpp" />
+    <ClInclude Include="src\PromoteOption.hpp" />
     <ClInclude Include="src\Queen.hpp" />
     <ClInclude Include="src\Rook.hpp" />
     <ClInclude Include="src\Game.hpp" />

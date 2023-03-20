@@ -1,5 +1,13 @@
-Day 2 - SFML CHESS (Part 1)
-
-![](/images/screenshot.png)
+# Day 2 - SFML CHESS
 
 **March 9, 2023-** Chess game using C++ and SFML. 
+
+## Build with CMake
+
+```cmd
+mkdir build
+cmake -S . -B /build
+cmake --build /build
+```
+
+![](/images/screenshot.png)

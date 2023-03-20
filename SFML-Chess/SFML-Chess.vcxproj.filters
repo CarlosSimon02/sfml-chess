@@ -72,6 +72,9 @@
     <ClCompile Include="src\GameState.cpp">
       <Filter>Source Files\State</Filter>
     </ClCompile>
+    <ClCompile Include="src\PromoteOption.cpp">
+      <Filter>Source Files\Drawables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="src\GameState.hpp">
       <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PromoteOption.hpp">
+      <Filter>Header Files\Drawables</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
