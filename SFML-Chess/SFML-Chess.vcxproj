@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{6d3e1e7d-a2f4-4846-b5c6-7c86ddec9230}</ProjectGuid>
+    <ProjectGuid>{b02603bc-1516-4d2b-afc1-96efa5ca8de0}</ProjectGuid>
     <RootNamespace>SFML_Chess</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -93,7 +93,6 @@
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\SFML-2.5.1\include;$(ProjectDir)src</AdditionalIncludeDirectories>
-      <ShowIncludes>false</ShowIncludes>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -129,7 +128,6 @@
       <PreprocessorDefinitions>SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\SFML-2.5.1\include;$(ProjectDir)src</AdditionalIncludeDirectories>
-      <ShowIncludes>false</ShowIncludes>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -159,35 +157,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\GameState.cpp" />
-    <ClCompile Include="src\PiecesBuffer.cpp" />
-    <ClCompile Include="src\Highlights.cpp" />
     <ClCompile Include="src\Bishop.cpp" />
     <ClCompile Include="src\Board.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameState.cpp" />
+    <ClCompile Include="src\Highlights.cpp" />
     <ClCompile Include="src\King.cpp" />
     <ClCompile Include="src\Knight.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Pawn.cpp" />
+    <ClCompile Include="src\Piece.cpp" />
+    <ClCompile Include="src\PiecesBuffer.cpp" />
     <ClCompile Include="src\PromoteOption.cpp" />
     <ClCompile Include="src\Queen.cpp" />
     <ClCompile Include="src\Rook.cpp" />
-    <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Piece.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GameState.hpp" />
-    <ClInclude Include="src\PiecesBuffer.hpp" />
-    <ClInclude Include="src\Highlights.hpp" />
-    <ClInclude Include="src\Board.hpp" />
     <ClInclude Include="src\Bishop.hpp" />
+    <ClInclude Include="src\Board.hpp" />
+    <ClInclude Include="src\Game.hpp" />
+    <ClInclude Include="src\GameState.hpp" />
+    <ClInclude Include="src\Highlights.hpp" />
     <ClInclude Include="src\King.hpp" />
     <ClInclude Include="src\Knight.hpp" />
     <ClInclude Include="src\Pawn.hpp" />
+    <ClInclude Include="src\Piece.hpp" />
+    <ClInclude Include="src\PiecesBuffer.hpp" />
     <ClInclude Include="src\PromoteOption.hpp" />
     <ClInclude Include="src\Queen.hpp" />
     <ClInclude Include="src\Rook.hpp" />
-    <ClInclude Include="src\Game.hpp" />
-    <ClInclude Include="src\Piece.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\chess-pieces.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,6 +2,8 @@
 
 **March 9, 2023-** Chess game using C++ and SFML. 
 
+Make sure to use c++17.
+
 ## Build with CMake
 
 ```cmd
