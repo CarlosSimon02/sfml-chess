@@ -55,7 +55,7 @@ bool PromoteOption::isHovering(sf::Vector2i mousePos)
 	mHoverFill.setFillColor(sf::Color::Transparent);
 	if (mFill.getGlobalBounds().contains((sf::Vector2f)mousePos))
 	{
-		sf::Vector2f piecePos = mSpriteList.getPosition() + sf::Vector2f(((mousePos.x - mSpriteList.getPosition().x) / Board::TILESIZE) * Board::TILESIZE, 0.f);
+		sf::Vector2f piecePos = mSpriteList.getPosition() + sf::Vector2f((float)((int)((mousePos.x - mSpriteList.getPosition().x) / Board::TILESIZE) * Board::TILESIZE), 0.f);
 		mHoverFill.setFillColor(sf::Color(220, 220, 220));
 		mHoverFill.setPosition(piecePos);
 		Type temp = static_cast<Type>(((mHoverFill.getGlobalBounds().left - mSpriteList.getGlobalBounds().left) / Board::TILESIZE) + 1);
