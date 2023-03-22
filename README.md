@@ -8,8 +8,8 @@ Make sure to use c++17.
 
 ```cmd
 mkdir build
-cmake -S . -B /build
-cmake --build /build
+cmake -S . -B build
+cmake --build build
 ```
 
 ![](/images/screenshot.png)
