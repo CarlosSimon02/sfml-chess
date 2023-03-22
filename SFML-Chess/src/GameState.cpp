@@ -20,7 +20,9 @@ void GameState::handleEvents(sf::RenderWindow& window, sf::Event& event)
 		if (event.type == sf::Event::Closed) 
 			window.close();
 
-		if (getGameOverStat() && event.type == sf::Event::KeyPressed)
+		if (getGameOverStat() && 
+			(event.type == sf::Event::KeyPressed ||
+				event.type == sf::Event::MouseButtonPressed))
 		{
 			PiecesBuffer init;
 			mPiecesBuffer = std::move(init);
@@ -40,7 +42,8 @@ void GameState::handleEvents(sf::RenderWindow& window, sf::Event& event)
 		}
 
 		if (event.type == sf::Event::MouseButtonPressed &&
-			!mPiecesBuffer.getPromotingStat())
+			!mPiecesBuffer.getPromotingStat() &&
+			!getGameOverStat())
 		{
 			if (mOldMousePos >= 0)
 			{
