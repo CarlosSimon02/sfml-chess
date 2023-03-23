@@ -10,7 +10,8 @@ PromoteOption::PromoteOption()
 	if (!mTexture.loadFromFile("assets/chess-pieces.png")) std::cout << "Can't open " + fileName << std::endl;
 	mTexture.setSmooth(true);
 	mSpriteList.setTexture(mTexture);
-	mSpriteList.setTextureRect({ 1 * Board::TILESIZE, (int)mSide * Board::TILESIZE, 4*Board::TILESIZE, Board::TILESIZE });
+	mSpriteList.setScale(sf::Vector2f{ .75f,.75f });
+	mSpriteList.setTextureRect({ 1 * 133, (int)mSide * 133, 4*133, 133 });
 
 	mFill.setPosition(sf::Vector2f{ (Board::TILECOUNT * Board::TILESIZE / 2) - sf::Vector2i(2 * Board::TILESIZE, Board::TILESIZE / 2) });
 	mSpriteList.setPosition(sf::Vector2f{ (Board::TILECOUNT * Board::TILESIZE / 2) - sf::Vector2i(2 * Board::TILESIZE, Board::TILESIZE / 2) });
@@ -37,7 +38,7 @@ Type PromoteOption::getChosenType() const
 void PromoteOption::setSide(Side side)
 {
 	mSide = side;
-	mSpriteList.setTextureRect({ 1 * Board::TILESIZE, (int)side * Board::TILESIZE, 4 * Board::TILESIZE, Board::TILESIZE });
+	mSpriteList.setTextureRect({ 1 * 133, (int)side * 133, 4 * 133, 133 });
 }
 
 Side PromoteOption::getSide() const
