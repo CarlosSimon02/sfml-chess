@@ -9,8 +9,9 @@ Piece::Piece(const Type& type, const Side& side, sf::Vector2i pos, const std::ve
 	if (!mTexture.loadFromFile("assets/chess-pieces.png")) std::cout << "Can't open " + fileName << std::endl;
 	mTexture.setSmooth(true);
 	mSprite.setTexture(mTexture);
-	mSprite.setTextureRect({ (int)type * Board::TILESIZE, (int)side * Board::TILESIZE, Board::TILESIZE, Board::TILESIZE });
+	mSprite.setTextureRect({ (int)type * 133, (int)side * 133, 133,133 });
 	mSprite.setPosition(static_cast<sf::Vector2f>(pos * Board::TILESIZE));
+	mSprite.setScale(sf::Vector2f{ .75f,.75f });
 }
 
 void Piece::setPos(const sf::Vector2i& pos, PiecesBuffer& buff)
