@@ -1,6 +1,6 @@
-# Day 2 - SFML CHESS
+SFML CHESS
 
-**March 9, 2023-** Chess game using C++ and SFML. 
+Chess game using C++ and SFML. 
 
 Make sure to use c++17.
 
